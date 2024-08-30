@@ -226,6 +226,7 @@ class NumberParser {
         currentIdx = digitsParsingResult.currentIdx();
         int digitCount = currentIdx - digitsStartIdx;
         if (digitCount == 0) {
+            if (checkIfNull(buffer, len, offset)) return Float.NaN;
             throw new JsonParsingException("Invalid number. Minus has to be followed by a digit.");
         }
         if ('0' == buffer[digitsStartIdx] && digitCount > 1) {
@@ -273,6 +274,7 @@ class NumberParser {
         currentIdx = digitsParsingResult.currentIdx();
         int digitCount = currentIdx - digitsStartIdx;
         if (digitCount == 0) {
+            if (checkIfNull(buffer, len, offset)) return Double.NaN;
             throw new JsonParsingException("Invalid number. Minus has to be followed by a digit.");
         }
         if ('0' == buffer[digitsStartIdx] && digitCount > 1) {
@@ -360,4 +362,11 @@ class NumberParser {
             return currentIdx;
         }
     }
+
+    private boolean checkIfNull(byte[] buffer, int len, int offset) {
+        boolean statsWithN = buffer[offset] == 'n' || buffer[offset] == 'N';
+        boolean endsWithL = buffer[offset + 3] == 'l' || buffer[offset + 3] == 'L';
+        return statsWithN && endsWithL;
+    }
+
 }
