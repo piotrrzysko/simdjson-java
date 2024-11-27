@@ -39,7 +39,6 @@ class OnDemandJsonIterator {
         this.len = len;
         this.depth = 1;
     }
-
     void skipChild() {
         skipChild(depth - 1);
     }
@@ -442,6 +441,19 @@ class OnDemandJsonIterator {
         }
         return numberParser.parseFloat(buffer, len, idx);
     }
+    String getOrCompressAsString() {
+        depth--;
+        int idx = indexer.getAndAdvance();
+        if (buffer[idx] == '"') {
+            return new String(buffer, idx + 1, indexer.peek() - idx - 2);
+        } else {
+            return new String(buffer, idx, indexer.peek() - idx);
+        }
+    }
+    String getObjectKey() {
+        int idx = indexer.getAndAdvance();
+        return new String(buffer, idx + 1, indexer.peek() - idx - 2);
+    }
 
     int getRootString(byte[] stringBuffer) {
         depth--;
@@ -621,7 +633,6 @@ class OnDemandJsonIterator {
         }
         return IteratorResult.NOT_EMPTY;
     }
-
     boolean nextObjectField() {
         int idx = indexer.getAndAdvance();
         byte character = buffer[idx];

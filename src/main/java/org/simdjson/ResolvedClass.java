@@ -10,9 +10,9 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-class ResolvedClass {
+public class ResolvedClass {
 
-    enum ResolvedClassCategory {
+    public enum ResolvedClassCategory {
         BOOLEAN_PRIMITIVE(boolean.class, new boolean[0]),
         BOOLEAN(Boolean.class, new Boolean[0]),
         BYTE_PRIMITIVE(byte.class, new byte[0]),
